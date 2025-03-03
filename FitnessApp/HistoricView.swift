@@ -1,5 +1,5 @@
 //
-//  MainContentView.swift
+//  HistoricView.swift
 //  FitnessApp
 //
 //  Created by Dylan on 3/3/2568 BE.
@@ -7,15 +7,17 @@
 
 import SwiftUI
 
-struct MainContentView: View {
+struct HistoricView: View {
     // MARK: - PROPERTIES
     // MARK: - BODY
     var body: some View {
-        MainTabView()
+        ScrollView(.vertical, showsIndicators: false) {
+            
+        }
     }
 }
 
 // MARK: - PREVIEW
 #Preview(traits: .sizeThatFitsLayout) {
-    MainContentView()
+    HistoricView()
 }
