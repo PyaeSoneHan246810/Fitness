@@ -12,6 +12,7 @@ struct HomeView: View {
     @State private var calories: Int = 123
     @State private var active: Int = 52
     @State private var stand: Int = 8
+    @State private var fitnessActivities: [FitnessActivity] = []
     
     // MARK: - PROPERTIES
     private let caloriesColor: Color = .pink
@@ -19,20 +20,34 @@ struct HomeView: View {
     private let standColor: Color = .blue
     private let progressLineWidth: CGFloat = 20.0
     
+    // MARK: - MOCK DATA
+    private let mockFitnessActivities: [FitnessActivity] = [
+        FitnessActivity(
+            id: 0,
+            title: "Today Steps",
+            subtitle: "Goal 10,000",
+            imageName: "figure.walk",
+            tintColor: .green,
+            value: "6,121"
+        ),
+        FitnessActivity(
+            id: 1,
+            title: "Today Steps",
+            subtitle: "Goal 10,000",
+            imageName: "figure.run",
+            tintColor: .blue,
+            value: "6,121"
+        )
+    ]
+    
     // MARK: - BODY
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            VStack(spacing: 24.0) {
-                Text("Welcome")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                HStack {
-                    Spacer()
-                    progressInfoView()
-                    Spacer()
-                    progressCirclesView()
-                        .padding(.horizontal, 20.0)
-                    Spacer()
+            VStack(alignment: .leading, spacing: 40.0) {
+                Group {
+                    homeTitleView()
+                    progressSessionView()
+                    fitnessActivitySessionView()
                 }
                 .padding(.horizontal, 16.0)
             }
@@ -40,6 +55,24 @@ struct HomeView: View {
     }
     
     // MARK: - VIEW BUILDERS
+    @ViewBuilder
+    private func homeTitleView() -> some View {
+        Text("Welcome")
+            .font(.largeTitle)
+            .fontWeight(.bold)
+            .opacity(0.75)
+    }
+    @ViewBuilder
+    private func progressSessionView() -> some View {
+        HStack {
+            Spacer()
+            progressInfoView()
+            Spacer()
+            progressCirclesView()
+                .padding(.horizontal, 20.0)
+            Spacer()
+        }
+    }
     @ViewBuilder
     private func progressInfoView() -> some View {
         VStack(
@@ -102,6 +135,47 @@ struct HomeView: View {
                 tintColor: standColor
             )
             .padding(.all, progressLineWidth * 2)
+        }
+    }
+    @ViewBuilder
+    private func fitnessActivitySessionView() -> some View {
+        VStack(spacing: 20.0) {
+            HStack {
+                Text("Fitness Activity")
+                    .font(.title2)
+                Spacer()
+                Button {
+                    
+                } label: {
+                    Text("Show more")
+                        .padding(.horizontal, 12.0)
+                        .padding(.vertical, 10.0)
+                        .foregroundStyle(.white)
+                        .background(.accent)
+                        .clipShape(.capsule)
+                }
+            }
+            fitnessActivitiesView()
+        }
+    }
+    @ViewBuilder
+    private func fitnessActivitiesView() -> some View {
+        LazyVGrid(
+            columns: Array(
+                repeating: GridItem(
+                    spacing: 12.0,
+                    alignment: .center
+                ),
+                count: 2
+            ),
+            alignment: .center,
+            spacing: 12.0
+        ) {
+            ForEach(mockFitnessActivities) {
+                FitnessActivityCardView(
+                    fitnessActivity: $0
+                )
+            }
         }
     }
 }
