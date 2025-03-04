@@ -23,7 +23,10 @@ struct FitnessActivityCardView: View {
                         spacing: 8.0
                     ) {
                         Text(fitnessActivity.title)
+                            .font(.callout)
+                            .fontWeight(.medium)
                         Text(fitnessActivity.subtitle)
+                            .font(.headline)
                     }
                     Spacer()
                     Image(

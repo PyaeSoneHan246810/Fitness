@@ -18,7 +18,6 @@ struct HomeView: View {
     private let caloriesColor: Color = .pink
     private let activeColor: Color = .green
     private let standColor: Color = .blue
-    private let progressLineWidth: CGFloat = 20.0
     
     // MARK: - MOCK DATA
     private let mockFitnessActivities: [FitnessActivity] = [
@@ -69,7 +68,7 @@ struct HomeView: View {
             progressInfoView()
             Spacer()
             progressCirclesView()
-                .padding(.horizontal, 20.0)
+                .padding(.horizontal, 40.0)
             Spacer()
         }
     }
@@ -85,7 +84,7 @@ struct HomeView: View {
             ) {
                 Text("Calories")
                     .font(.callout)
-                    .fontWeight(.bold)
+                    .fontWeight(.semibold)
                     .foregroundStyle(caloriesColor)
                 Text("\(calories) kcal")
                     .fontWeight(.bold)
@@ -96,7 +95,7 @@ struct HomeView: View {
             ) {
                 Text("Active")
                     .font(.callout)
-                    .fontWeight(.bold)
+                    .fontWeight(.semibold)
                     .foregroundStyle(activeColor)
                 Text("\(active) mins")
                     .fontWeight(.bold)
@@ -107,7 +106,7 @@ struct HomeView: View {
             ) {
                 Text("Stand")
                     .font(.callout)
-                    .fontWeight(.bold)
+                    .fontWeight(.semibold)
                     .foregroundStyle(standColor)
                 Text("\(stand) hours")
                     .fontWeight(.bold)
@@ -116,6 +115,7 @@ struct HomeView: View {
     }
     @ViewBuilder
     private func progressCirclesView() -> some View {
+        let progressLineWidth: CGFloat = 20.0
         ZStack {
             ProgressCircleView(
                 progress: $calories,
@@ -143,11 +143,15 @@ struct HomeView: View {
             HStack {
                 Text("Fitness Activity")
                     .font(.title2)
+                    .fontWeight(.bold)
+                    .opacity(0.75)
                 Spacer()
                 Button {
-                    
+                    // show more
                 } label: {
                     Text("Show more")
+                        .font(.callout)
+                        .fontWeight(.semibold)
                         .padding(.horizontal, 12.0)
                         .padding(.vertical, 10.0)
                         .foregroundStyle(.white)
@@ -171,9 +175,9 @@ struct HomeView: View {
             alignment: .center,
             spacing: 12.0
         ) {
-            ForEach(mockFitnessActivities) {
+            ForEach(mockFitnessActivities) { fitnessActivity in
                 FitnessActivityCardView(
-                    fitnessActivity: $0
+                    fitnessActivity: fitnessActivity
                 )
             }
         }
