@@ -25,8 +25,10 @@ struct FitnessActivityCardView: View {
                         Text(fitnessActivity.title)
                             .font(.callout)
                             .fontWeight(.medium)
+                            .lineLimit(1)
                         Text(fitnessActivity.subtitle)
                             .font(.headline)
+                            .lineLimit(1)
                     }
                     Spacer()
                     Image(
@@ -38,6 +40,7 @@ struct FitnessActivityCardView: View {
                 Text(fitnessActivity.value)
                     .font(.title)
                     .fontWeight(.bold)
+                    .lineLimit(1)
                     .padding()
             }
             .padding()

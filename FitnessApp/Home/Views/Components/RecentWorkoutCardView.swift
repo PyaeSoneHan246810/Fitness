@@ -26,16 +26,20 @@ struct RecentWorkoutCardView: View {
                     Text(workout.title)
                         .font(.title3)
                         .fontWeight(.semibold)
+                        .lineLimit(1)
                     Spacer()
                     Text(workout.date)
                         .font(.callout)
+                        .lineLimit(1)
                 }
                 HStack {
                     Text(workout.duration)
                         .font(.callout)
+                        .lineLimit(1)
                     Spacer()
                     Text(workout.calories)
                         .font(.callout)
+                        .lineLimit(1)
                 }
             }
         }

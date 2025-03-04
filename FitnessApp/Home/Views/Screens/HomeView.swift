@@ -67,7 +67,7 @@ struct HomeView: View {
                     .font(.callout)
                     .fontWeight(.semibold)
                     .foregroundStyle(caloriesColor)
-                Text("\(viewModel.calories) kCal")
+                Text("\(viewModel.caloriesAmount, specifier: "%.2f") kCal")
                     .fontWeight(.bold)
             }
             VStack(
@@ -78,7 +78,7 @@ struct HomeView: View {
                     .font(.callout)
                     .fontWeight(.semibold)
                     .foregroundStyle(activeColor)
-                Text("\(viewModel.active) mins")
+                Text("\(viewModel.activeMinutes) mins")
                     .fontWeight(.bold)
             }
             VStack(
@@ -89,7 +89,7 @@ struct HomeView: View {
                     .font(.callout)
                     .fontWeight(.semibold)
                     .foregroundStyle(standColor)
-                Text("\(viewModel.stand) hours")
+                Text("\(viewModel.standHours) hours")
                     .fontWeight(.bold)
             }
         }
@@ -99,19 +99,19 @@ struct HomeView: View {
         let progressLineWidth: CGFloat = 20.0
         ZStack {
             ProgressCircleView(
-                progress: viewModel.calories,
-                goal: 600,
+                progress: Int(viewModel.caloriesAmount),
+                goal: 2500,
                 tintColor: caloriesColor,
                 lineWidth: progressLineWidth
             )
             ProgressCircleView(
-                progress: viewModel.active,
+                progress: viewModel.activeMinutes,
                 goal: 60,
                 tintColor: activeColor
             )
             .padding(.all, progressLineWidth)
             ProgressCircleView(
-                progress: viewModel.stand,
+                progress: viewModel.standHours,
                 goal: 24,
                 tintColor: standColor
             )
@@ -160,7 +160,7 @@ struct HomeView: View {
             alignment: .center,
             spacing: 12.0
         ) {
-            ForEach(viewModel.mockFitnessActivities) { fitnessActivity in
+            ForEach(viewModel.fitnessActivities) { fitnessActivity in
                 FitnessActivityCardView(
                     fitnessActivity: fitnessActivity
                 )
@@ -181,7 +181,7 @@ struct HomeView: View {
         LazyVStack(
             spacing: 12.0
         ) {
-            ForEach(viewModel.mockRecentWorkouts) { recentWorkout in
+            ForEach(viewModel.recentWorkouts) { recentWorkout in
                 RecentWorkoutCardView(
                     workout: recentWorkout
                 )

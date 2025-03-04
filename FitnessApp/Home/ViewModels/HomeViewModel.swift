@@ -10,50 +10,71 @@ import Observation
 
 @Observable
 class HomeViewModel {
+    // MARK: - PROPERTIES
+    let healthManager: HealthManager = .shared
+    
     // MARK: - STATE PROPERTIES
-    private(set) var calories: Int = 123
-    private(set) var active: Int = 52
-    private(set) var stand: Int = 8
+    private(set) var caloriesAmount: Double = 0
+    private(set) var activeMinutes: Int = 0
+    private(set) var standHours: Int = 0
     private(set) var fitnessActivities: [FitnessActivity] = []
     private(set) var recentWorkouts: [Workout] = []
     
-    // MARK: - MOCK DATA
-    let mockFitnessActivities: [FitnessActivity] = [
-        FitnessActivity(
-            id: 0,
-            title: "Today Steps",
-            subtitle: "Goal 10,000",
-            imageName: "figure.walk",
-            tintColor: .green,
-            value: "6,121"
-        ),
-        FitnessActivity(
-            id: 1,
-            title: "Today Steps",
-            subtitle: "Goal 10,000",
-            imageName: "figure.run",
-            tintColor: .blue,
-            value: "6,121"
-        )
-    ]
-    let mockRecentWorkouts: [Workout] = [
-        Workout(
-            id: 1,
-            title: "Running",
-            imageName: "figure.run",
-            tintColor: .green,
-            duration: "47 mins",
-            date: "Aug 3",
-            calories: "321 kCal"
-        ),
-        Workout(
-            id: 2,
-            title: "Walking",
-            imageName: "figure.walk",
-            tintColor: .blue,
-            duration: "30 mins",
-            date: "Aug 3",
-            calories: "250 kCal"
-        )
-    ]
+    // MARK: - INITIALIZER
+    init() {
+        Task {
+            do {
+                try await healthManager.requestHealthStoreAuthorization()
+                getHealthData()
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    // MARK: - FUNCTIONS
+    private func getHealthData() {
+        getTodayBurnedCaloriesAmount()
+        getTodayActiveMinutes()
+        getTodayStandHours()
+    }
+    
+    private func getTodayBurnedCaloriesAmount() {
+        healthManager.getTodayBurnedCaloriesAmount { result in
+            switch result {
+            case .success(let caloriesAmount):
+                DispatchQueue.main.async {
+                    self.caloriesAmount = caloriesAmount
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func getTodayActiveMinutes() {
+        healthManager.getTodayActiveMinutes { result in
+            switch result {
+            case .success(let activeMinutes):
+                DispatchQueue.main.async {
+                    self.activeMinutes = Int(activeMinutes)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+     private func getTodayStandHours() {
+        healthManager.getTodayStandHours { result in
+            switch result {
+            case .success(let standHours):
+                DispatchQueue.main.async {
+                    self.standHours = standHours
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
 }
