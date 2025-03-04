@@ -9,56 +9,12 @@ import SwiftUI
 
 struct HomeView: View {
     // MARK: - STATE PROPERTIES
-    @State private var calories: Int = 123
-    @State private var active: Int = 52
-    @State private var stand: Int = 8
-    @State private var fitnessActivities: [FitnessActivity] = []
-    @State private var recentWorkouts: [Workout] = []
+    @State private var viewModel: HomeViewModel = .init()
     
     // MARK: - PROPERTIES
     private let caloriesColor: Color = .pink
     private let activeColor: Color = .green
     private let standColor: Color = .blue
-    
-    // MARK: - MOCK DATA
-    private let mockFitnessActivities: [FitnessActivity] = [
-        FitnessActivity(
-            id: 0,
-            title: "Today Steps",
-            subtitle: "Goal 10,000",
-            imageName: "figure.walk",
-            tintColor: .green,
-            value: "6,121"
-        ),
-        FitnessActivity(
-            id: 1,
-            title: "Today Steps",
-            subtitle: "Goal 10,000",
-            imageName: "figure.run",
-            tintColor: .blue,
-            value: "6,121"
-        )
-    ]
-    private let mockRecentWorkouts: [Workout] = [
-        Workout(
-            id: 1,
-            title: "Running",
-            imageName: "figure.run",
-            tintColor: .green,
-            duration: "47 mins",
-            date: "Aug 3",
-            calories: "321 kCal"
-        ),
-        Workout(
-            id: 2,
-            title: "Walking",
-            imageName: "figure.walk",
-            tintColor: .blue,
-            duration: "30 mins",
-            date: "Aug 3",
-            calories: "250 kCal"
-        )
-    ]
     
     // MARK: - BODY
     var body: some View {
@@ -111,7 +67,7 @@ struct HomeView: View {
                     .font(.callout)
                     .fontWeight(.semibold)
                     .foregroundStyle(caloriesColor)
-                Text("\(calories) kCal")
+                Text("\(viewModel.calories) kCal")
                     .fontWeight(.bold)
             }
             VStack(
@@ -122,7 +78,7 @@ struct HomeView: View {
                     .font(.callout)
                     .fontWeight(.semibold)
                     .foregroundStyle(activeColor)
-                Text("\(active) mins")
+                Text("\(viewModel.active) mins")
                     .fontWeight(.bold)
             }
             VStack(
@@ -133,7 +89,7 @@ struct HomeView: View {
                     .font(.callout)
                     .fontWeight(.semibold)
                     .foregroundStyle(standColor)
-                Text("\(stand) hours")
+                Text("\(viewModel.stand) hours")
                     .fontWeight(.bold)
             }
         }
@@ -143,19 +99,19 @@ struct HomeView: View {
         let progressLineWidth: CGFloat = 20.0
         ZStack {
             ProgressCircleView(
-                progress: $calories,
+                progress: viewModel.calories,
                 goal: 600,
                 tintColor: caloriesColor,
                 lineWidth: progressLineWidth
             )
             ProgressCircleView(
-                progress: $active,
+                progress: viewModel.active,
                 goal: 60,
                 tintColor: activeColor
             )
             .padding(.all, progressLineWidth)
             ProgressCircleView(
-                progress: $stand,
+                progress: viewModel.stand,
                 goal: 24,
                 tintColor: standColor
             )
@@ -204,7 +160,7 @@ struct HomeView: View {
             alignment: .center,
             spacing: 12.0
         ) {
-            ForEach(mockFitnessActivities) { fitnessActivity in
+            ForEach(viewModel.mockFitnessActivities) { fitnessActivity in
                 FitnessActivityCardView(
                     fitnessActivity: fitnessActivity
                 )
@@ -225,7 +181,7 @@ struct HomeView: View {
         LazyVStack(
             spacing: 12.0
         ) {
-            ForEach(mockRecentWorkouts) { recentWorkout in
+            ForEach(viewModel.mockRecentWorkouts) { recentWorkout in
                 RecentWorkoutCardView(
                     workout: recentWorkout
                 )
