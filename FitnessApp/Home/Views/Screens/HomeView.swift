@@ -67,7 +67,7 @@ struct HomeView: View {
                     .font(.callout)
                     .fontWeight(.semibold)
                     .foregroundStyle(caloriesColor)
-                Text("\(viewModel.caloriesAmount, specifier: "%.2f") kCal")
+                Text("\(viewModel.caloriesAmount.formattedNumberString()) kCal")
                     .fontWeight(.bold)
             }
             VStack(
@@ -144,26 +144,30 @@ struct HomeView: View {
             sessionHeaderView(title: "Fitness Activity") {
                 print("show more fitness activities")
             }
-            fitnessActivitiesGridView()
-        }
-    }
-    @ViewBuilder
-    private func fitnessActivitiesGridView() -> some View {
-        LazyVGrid(
-            columns: Array(
-                repeating: GridItem(
-                    spacing: 12.0,
-                    alignment: .center
-                ),
-                count: 2
-            ),
-            alignment: .center,
-            spacing: 12.0
-        ) {
-            ForEach(viewModel.fitnessActivities) { fitnessActivity in
-                FitnessActivityCardView(
-                    fitnessActivity: fitnessActivity
+            if viewModel.fitnessActivities.isEmpty {
+                ContentUnavailableView(
+                    "Empty fitness activities",
+                    systemImage: "figure.stand"
                 )
+                .opacity(0.80)
+            } else {
+                LazyVGrid(
+                    columns: Array(
+                        repeating: GridItem(
+                            spacing: 12.0,
+                            alignment: .center
+                        ),
+                        count: 2
+                    ),
+                    alignment: .center,
+                    spacing: 12.0
+                ) {
+                    ForEach(viewModel.fitnessActivities) { fitnessActivity in
+                        FitnessActivityCardView(
+                            fitnessActivity: fitnessActivity
+                        )
+                    }
+                }
             }
         }
     }
@@ -173,18 +177,22 @@ struct HomeView: View {
             sessionHeaderView(title: "Recent Workouts") {
                 print("show more recent workouts")
             }
-            recentWorkoutsStackView()
-        }
-    }
-    @ViewBuilder
-    private func recentWorkoutsStackView() -> some View {
-        LazyVStack(
-            spacing: 12.0
-        ) {
-            ForEach(viewModel.recentWorkouts) { recentWorkout in
-                RecentWorkoutCardView(
-                    workout: recentWorkout
+            if viewModel.recentWorkouts.isEmpty {
+                ContentUnavailableView(
+                    "Empty recent workouts",
+                    systemImage: "figure.stand"
                 )
+                .opacity(0.80)
+            } else {
+                LazyVStack(
+                    spacing: 12.0
+                ) {
+                    ForEach(viewModel.recentWorkouts) { recentWorkout in
+                        RecentWorkoutCardView(
+                            workout: recentWorkout
+                        )
+                    }
+                }
             }
         }
     }

@@ -14,7 +14,7 @@ struct FitnessActivityCardView: View {
     var body: some View {
         ZStack {
             Color(uiColor: .systemGray6)
-            VStack {
+            VStack(spacing: 16.0) {
                 HStack(
                     alignment: .top
                 ) {
@@ -23,11 +23,11 @@ struct FitnessActivityCardView: View {
                         spacing: 8.0
                     ) {
                         Text(fitnessActivity.title)
-                            .font(.callout)
-                            .fontWeight(.medium)
+                            .font(.headline)
                             .lineLimit(1)
                         Text(fitnessActivity.subtitle)
-                            .font(.headline)
+                            .font(.callout)
+                            .fontWeight(.medium)
                             .lineLimit(1)
                     }
                     Spacer()
@@ -38,12 +38,12 @@ struct FitnessActivityCardView: View {
                     .foregroundStyle(fitnessActivity.tintColor)
                 }
                 Text(fitnessActivity.value)
-                    .font(.title)
+                    .font(.title3)
                     .fontWeight(.bold)
                     .lineLimit(1)
-                    .padding()
             }
-            .padding()
+            .padding(.horizontal, 16.0)
+            .padding(.vertical, 16.0)
         }
         .clipShape(.rect(cornerRadius: 16.0))
     }
@@ -53,7 +53,6 @@ struct FitnessActivityCardView: View {
 #Preview(traits: .sizeThatFitsLayout) {
     FitnessActivityCardView(
         fitnessActivity: .init(
-            id: 1,
             title: "Today Steps",
             subtitle: "Goal 10,000",
             imageName: "figure.walk",

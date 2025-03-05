@@ -37,6 +37,8 @@ class HomeViewModel {
         getTodayBurnedCaloriesAmount()
         getTodayActiveMinutes()
         getTodayStandHours()
+        getTodayStepsFitnessActivity()
+        getCurrentWeekFitnessActivities()
     }
     
     private func getTodayBurnedCaloriesAmount() {
@@ -71,6 +73,32 @@ class HomeViewModel {
             case .success(let standHours):
                 DispatchQueue.main.async {
                     self.standHours = standHours
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func getTodayStepsFitnessActivity() {
+        healthManager.getTodayStepsFitnessActivity { result in
+            switch result {
+            case .success(let fitnessActivity):
+                DispatchQueue.main.async {
+                    self.fitnessActivities.append(fitnessActivity)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func getCurrentWeekFitnessActivities() {
+        healthManager.getCurrentWeekWorkoutFitnessActivities { result in
+            switch result {
+            case .success(let fitnessActivities):
+                DispatchQueue.main.async {
+                    self.fitnessActivities.append(contentsOf: fitnessActivities)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
