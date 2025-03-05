@@ -50,7 +50,6 @@ struct RecentWorkoutCardView: View {
 #Preview(traits: .sizeThatFitsLayout) {
     RecentWorkoutCardView(
         workout: Workout(
-            id: 1,
             title: "Running",
             imageName: "figure.run",
             tintColor: .green,

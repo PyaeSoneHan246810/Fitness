@@ -12,7 +12,8 @@ enum HealthDataError: LocalizedError {
     case activeMinutesUnavailable
     case standHoursUnavailable
     case stepCountUnavailable
-    case workoutFitnessActivitiesUnavailable
+    case currentWeekFitnessActivitiesUnavailable
+    case workoutsForMonthUnavailable
     var errorDescription: String? {
         switch self {
         case .burnedCaloriesAmountUnavailable:
@@ -23,8 +24,10 @@ enum HealthDataError: LocalizedError {
             return "Stand hours unavailable."
         case .stepCountUnavailable:
             return "Step count unavailable."
-        case .workoutFitnessActivitiesUnavailable:
-            return "Workout fitness activities unavailable."
+        case .currentWeekFitnessActivitiesUnavailable:
+            return "Current week fitness activities unavailable."
+        case .workoutsForMonthUnavailable:
+            return "Workouts for month unavailable."
         }
     }
 }

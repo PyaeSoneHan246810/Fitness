@@ -39,6 +39,7 @@ class HomeViewModel {
         getTodayStandHours()
         getTodayStepsFitnessActivity()
         getCurrentWeekFitnessActivities()
+        getWorkoutsForMonth()
     }
     
     private func getTodayBurnedCaloriesAmount() {
@@ -99,6 +100,19 @@ class HomeViewModel {
             case .success(let fitnessActivities):
                 DispatchQueue.main.async {
                     self.fitnessActivities.append(contentsOf: fitnessActivities)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func getWorkoutsForMonth() {
+        healthManager.getWorkoutsForMonth(Date()) { result in
+            switch result {
+            case .success(let workouts):
+                DispatchQueue.main.async {
+                    self.recentWorkouts.append(contentsOf: workouts)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
