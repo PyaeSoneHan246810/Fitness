@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// MARK: - MAIN TAB VIEW
 struct MainTabView: View {
     // MARK: - STATE PROPERTIES
     @State private var selectedTabItem: TabItem = .home
@@ -28,11 +27,11 @@ struct MainTabView: View {
                 HomeView()
             }
             Tab(
-                TabItem.historic.rawValue,
-                systemImage: TabItem.historic.systemImageName,
-                value: TabItem.historic
+                TabItem.charts.rawValue,
+                systemImage: TabItem.charts.systemImageName,
+                value: TabItem.charts
             ) {
-                HistoricView()
+                ChartsView()
             }
         }
     }
@@ -46,20 +45,6 @@ struct MainTabView: View {
             .foregroundColor: UIColor.accent
         ]
         UITabBar.appearance().scrollEdgeAppearance = apperence
-    }
-}
-
-// MARK: - TAB ITEM
-enum TabItem: String {
-    case home = "Home"
-    case historic = "Historic"
-    var systemImageName: String {
-        switch self {
-        case .home:
-            return "house"
-        case .historic:
-            return "chart.line.uptrend.xyaxis"
-        }
     }
 }
 
