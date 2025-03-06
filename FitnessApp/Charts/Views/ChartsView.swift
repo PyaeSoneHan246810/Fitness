@@ -13,29 +13,13 @@ struct ChartsView: View {
     @State private var viewModel: ChartsViewModel = .init()
     @State private var selectedChartOption: ChartOption = .oneWeek
     
-    // MARK: - COMPUTED PROPERTIES
-    private var dailySteps: [DailyStep] {
-        switch selectedChartOption {
-        case .oneWeek:
-            viewModel.dailyStepsOneWeek
-        case .oneMonth:
-            viewModel.dailyStepsOneMonth
-        case .threeMonth:
-            viewModel.dailyStepsThreeMonth
-        case .yearToDate:
-            viewModel.dailyStepsYearToDate
-        case .oneYear:
-            viewModel.dailySetpsOneYear
-        }
-    }
-    
     // MARK: - BODY
     var body: some View {
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 28.0) {
                     Group {
-                        dailyStepsChartView()
+                        stepsChartsView()
                     }
                     .padding(.horizontal, 16.0)
                 }
@@ -47,22 +31,115 @@ struct ChartsView: View {
     
     // MARK: - VIEW BUILDERS
     @ViewBuilder
-    private func dailyStepsChartView() -> some View {
-        VStack(spacing: 12.0) {
-            Chart {
-                ForEach(dailySteps) { dailyStep in
-                    BarMark(
-                        x: .value(
-                            dailyStep.date.formatted(),
-                            dailyStep.date,
-                            unit: .day
-                        ),
-                        y: .value(
-                            "Steps",
-                            dailyStep.count
-                        )
+    private func oneWeekStepsChartView() -> some View {
+        Chart {
+            ForEach(viewModel.stepsOneWeek) { dailyStep in
+                BarMark(
+                    x: .value(
+                        dailyStep.date.formatted(),
+                        dailyStep.date,
+                        unit: .day
+                    ),
+                    y: .value(
+                        "Steps",
+                        dailyStep.count
                     )
-                    .foregroundStyle(.blue)
+                )
+                .foregroundStyle(.blue)
+            }
+        }
+    }
+    @ViewBuilder
+    private func oneMonthStepsChartView() -> some View {
+        Chart {
+            ForEach(viewModel.stepsOneMonth) { dailyStep in
+                BarMark(
+                    x: .value(
+                        dailyStep.date.formatted(),
+                        dailyStep.date,
+                        unit: .day
+                    ),
+                    y: .value(
+                        "Steps",
+                        dailyStep.count
+                    )
+                )
+                .foregroundStyle(.blue)
+            }
+        }
+    }
+    @ViewBuilder
+    private func threeMonthStepsChartView() -> some View {
+        Chart {
+            ForEach(viewModel.stepsThreeMonth) { dailyStep in
+                BarMark(
+                    x: .value(
+                        dailyStep.date.formatted(),
+                        dailyStep.date,
+                        unit: .day
+                    ),
+                    y: .value(
+                        "Steps",
+                        dailyStep.count
+                    )
+                )
+                .foregroundStyle(.blue)
+            }
+        }
+    }
+    @ViewBuilder
+    private func yearToDateStepsChartView() -> some View {
+        Chart {
+            ForEach(viewModel.stepsYearToDate) { dailyStep in
+                BarMark(
+                    x: .value(
+                        dailyStep.date.formatted(),
+                        dailyStep.date,
+                        unit: .day
+                    ),
+                    y: .value(
+                        "Steps",
+                        dailyStep.count
+                    )
+                )
+                .foregroundStyle(.blue)
+            }
+        }
+    }
+    @ViewBuilder
+    private func oneYearStepsChartView() -> some View {
+        Chart {
+            ForEach(viewModel.stepsOneYear) { dailyStep in
+                BarMark(
+                    x: .value(
+                        dailyStep.date.formatted(),
+                        dailyStep.date,
+                        unit: .day
+                    ),
+                    y: .value(
+                        "Steps",
+                        dailyStep.count
+                    )
+                )
+                .foregroundStyle(.blue)
+            }
+        }
+    }
+    @ViewBuilder
+    private func stepsChartsView() -> some View {
+        VStack(spacing: 12.0) {
+            ZStack {
+                switch selectedChartOption {
+                case .oneWeek:
+                    oneWeekStepsChartView()
+                case .oneMonth:
+                    oneMonthStepsChartView()
+                case .threeMonth:
+                    threeMonthStepsChartView()
+                case .yearToDate:
+                    yearToDateStepsChartView()
+                case .oneYear:
+                    oneYearStepsChartView()
                 }
             }
             .frame(height: 320.0)
