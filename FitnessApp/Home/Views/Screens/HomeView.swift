@@ -22,26 +22,19 @@ struct HomeView: View {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 28.0) {
                     Group {
-                        homeTitleView()
                         progressSessionView()
                         fitnessActivitySessionView()
                         recentWorkoutsSessionView()
                     }
                     .padding(.horizontal, 16.0)
                 }
-                .padding(.bottom, 16.0)
+                .padding(.vertical, 16.0)
             }
+            .navigationTitle("Welcome")
         }
     }
     
     // MARK: - VIEW BUILDERS
-    @ViewBuilder
-    private func homeTitleView() -> some View {
-        Text("Welcome")
-            .font(.largeTitle)
-            .fontWeight(.bold)
-            .opacity(0.85)
-    }
     @ViewBuilder
     private func progressSessionView() -> some View {
         HStack {
