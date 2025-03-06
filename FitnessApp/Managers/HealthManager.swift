@@ -26,7 +26,10 @@ class HealthManager {
         let healthDataTypes: Set<HKObjectType> = [activeEnergyBurned, exerciseTime, standHours, stepCount, workout]
         try await healthStore.requestAuthorization(toShare: [], read: healthDataTypes)
     }
-    
+}
+
+extension HealthManager {
+    // MARK: - FUNCTIONS FOR GETTING HOME HEALTH DATA
     func getTodayBurnedCaloriesAmount(
         completion: @escaping (Result<Double, Error>) -> Void
     ) {
@@ -207,8 +210,8 @@ class HealthManager {
     
     func getWorkoutsForMonth(
         _ month: Date,
-        completion: @escaping (Result<[Workout], Error>
-    ) -> Void) {
+        completion: @escaping (Result<[Workout], Error>) -> Void
+    ) {
         let workout = HKSampleType.workoutType()
         let (startDate, endDate) = month.getMonthStartAndEndDates()
         let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate)
@@ -223,7 +226,6 @@ class HealthManager {
                 completion(.failure(HealthDataError.workoutsForMonthUnavailable))
                 return
             }
-            print(workouts.isEmpty)
             let workoutsForMonth = workouts.map { workout in
                 let workoutType = workout.workoutActivityType
                 let duration = Int(workout.duration) / 60
@@ -241,5 +243,49 @@ class HealthManager {
             completion(.success(workoutsForMonth))
         }
         healthStore.execute(query)
+    }
+}
+
+extension HealthManager {
+    // MARK: - FUNCTIONS FOR GETTING STEPS CHART DATA
+    struct YearStepData {
+        let yearToDateSteps: [MonthlyStep]
+        let oneYearSteps: [MonthlyStep]
+    }
+    func getYearToDateAndOneYearSteps(
+        completion: @escaping (Result<YearStepData, Error>) -> Void
+    ) {
+        let stepCount = HKQuantityType(.stepCount)
+        let calendar = Calendar.current
+        var yearToDateSteps: [MonthlyStep] = []
+        var oneYearSteps: [MonthlyStep] = []
+        for i in 0...11 {
+            let month = calendar.date(byAdding: .month, value: i, to: .now) ?? .now
+            let (startDate, endDate) = month.getMonthStartAndEndDates()
+            let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate)
+            let query = HKStatisticsQuery(
+                quantityType: stepCount,
+                quantitySamplePredicate: predicate
+            ) { _, statistics, error in
+                guard let sumQuantity = statistics?.sumQuantity(), error == nil else {
+                    completion(.failure(HealthDataError.stepCountUnavailable))
+                    return
+                }
+                let steps = sumQuantity.doubleValue(for: .count())
+                if i == 0 {
+                    oneYearSteps.append(MonthlyStep(date: month, count: Int(steps)))
+                    yearToDateSteps.append(MonthlyStep(date: month, count: Int(steps)))
+                } else {
+                    oneYearSteps.append(MonthlyStep(date: month, count: Int(steps)))
+                    if calendar.component(.year, from: .now) == calendar.component(.year, from: month) {
+                        yearToDateSteps.append(MonthlyStep(date: month, count: Int(steps)))
+                    }
+                }
+                if i == 11 {
+                    completion(.success(YearStepData(yearToDateSteps: yearToDateSteps, oneYearSteps: oneYearSteps)))
+                }
+            }
+            healthStore.execute(query)
+        }
     }
 }

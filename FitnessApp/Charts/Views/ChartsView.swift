@@ -27,6 +27,9 @@ struct ChartsView: View {
             }
             .navigationTitle("Charts")
         }
+        .onAppear {
+            viewModel.getYearToDateAndOneYearSteps()
+        }
     }
     
     // MARK: - VIEW BUILDERS
