@@ -22,6 +22,21 @@ class ChartsViewModel {
     ]
     private(set) var stepsOneMonth: [DailyStep] = []
     private(set) var stepsThreeMonth: [DailyStep] = []
-    private(set) var stepsYearToDate: [DailyStep] = []
-    private(set) var stepsOneYear: [DailyStep] = []
+    private(set) var stepsYearToDate: [MonthlyStep] = []
+    private(set) var stepsOneYear: [MonthlyStep] = []
+    
+    private(set) var averageOneWeek: Int = 0
+    private(set) var totalOneWeek: Int = 0
+    
+    private(set) var averageOneMonth: Int = 0
+    private(set) var totalOneMonth: Int = 0
+    
+    private(set) var averageThreeMonth: Int = 0
+    private(set) var totalThreeMonth: Int = 0
+    
+    private(set) var averageYearToDate: Int = 0
+    private(set) var totalYearToDate: Int = 0
+    
+    private(set) var averageOneYear: Int = 0
+    private(set) var totalOneYear: Int = 0
 }
